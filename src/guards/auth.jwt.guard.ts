@@ -32,7 +32,7 @@ export class AuthGuard implements CanActivate {
         secret: this.config.get('JWT_SECRET'),
       });
       const { username, email, avatarLink, isAuthenticated } =
-        await this.authservice.findUser(payload.username);
+        await this.authservice.findUser(payload.email);
       req['user'] = {
         username,
         email,

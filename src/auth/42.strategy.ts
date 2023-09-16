@@ -19,7 +19,7 @@ export class FTStrategy extends PassportStrategy(Strategy, '42') {
   }
 
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    let user = await this.authService.findUser(profile.username);
+    let user = await this.authService.findUser(profile.emails[0].value);
     if (!user) {
       await this.authService.signup({
         email: profile.emails[0].value,
@@ -27,7 +27,7 @@ export class FTStrategy extends PassportStrategy(Strategy, '42') {
         password: 'tmpPass',
         avatar: profile._json.image.link,
       });
-      user = await this.authService.findUser(profile.username);
+      user = await this.authService.findUser(profile.emails[0].value);
     }
     return user || null;
   }

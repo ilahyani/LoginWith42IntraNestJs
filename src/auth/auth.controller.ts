@@ -34,8 +34,9 @@ export class AuthController {
   @SetMetadata('isPublic', true)
   @Get('42-redirect')
   auth42Redirect(@Req() req) {
+    // form pre-filled with avatar and username and [hidden] email
+    // user fills password and fires a request to finish_signup
     return { user: req.user.username };
-    // fills form and fires a request to finish_signup
   }
 
   @SetMetadata('isPublic', true)
@@ -45,9 +46,9 @@ export class AuthController {
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const token = await this.authService.add_password(dto);
+    const token = await this.authService.finish_signup(dto);
     res.cookie('JWT_TOKEN', token.accessToken);
-    return "You're in " + dto.username;
+    return "You're in, " + dto.username;
   }
 
   @HttpCode(200)
@@ -59,7 +60,7 @@ export class AuthController {
   ) {
     const token = await this.authService.signin(dto);
     res.cookie('JWT_TOKEN', token.accessToken);
-    return "You're in " + dto.username;
+    return "You're in, " + dto.username;
   }
 
   @Get('Profile')
