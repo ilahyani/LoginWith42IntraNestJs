@@ -13,23 +13,21 @@ export class FTStrategy extends PassportStrategy(Strategy, '42') {
     super({
       clientID: config.get('42_UID'),
       clientSecret: config.get('42_SECRET'),
-      callbackURL: 'http://localhost:3000/auth/42-redirect',
+      callbackURL: config.get('42_CALLBACK_URI'),
       Scope: ['profile', 'email'],
     });
   }
 
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    // console.log(profile);
     let user = await this.authService.findUser(profile.username);
     if (!user) {
-      console.log('user not found. Signing up...');
       await this.authService.signup({
         email: profile.emails[0].value,
         username: profile.username,
-        password: 'temporaryPassword',
+        password: 'tmpPass',
+        avatar: profile._json.image.link,
       });
       user = await this.authService.findUser(profile.username);
-      console.log('user signed up', user);
     }
     return user || null;
   }

@@ -12,7 +12,9 @@ datasource db {
 
 model User {
   id  Int @id @default(autoincrement())
-  email     String @unique
-  username  String @unique
-  hash      String
+  email           String @unique
+  username        String @unique
+  hash            String
+  avatarLink      String
+  isAuthenticated Boolean
 }

@@ -12,6 +12,10 @@ export class authDTO {
   @IsString()
   @IsNotEmpty()
   password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  avatar: string;
 }
 
 export class signinDTO {
@@ -24,16 +28,16 @@ export class signinDTO {
   password: string;
 }
 
-// export class signupDTO {
-//   @IsString()
-//   @IsNotEmpty()
-//   username: string;
+export class signupDTO {
+  @IsString()
+  @IsNotEmpty()
+  username: string;
 
-//   @IsString()
-//   @IsNotEmpty()
-//   password: string;
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 
-//   @IsString()
-//   @IsNotEmpty()
-//   passwordConfirmation: string;
-// }
+  @IsString()
+  @IsNotEmpty()
+  passwordConf: string;
+}
