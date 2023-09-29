@@ -47,7 +47,6 @@ export class AuthController {
       );
       res.cookie('JWT_TOKEN', accessToken);
       res.redirect('http://localhost:3001/profile');
-      // return { accessToken: accessToken };
     } else {
       const userToken = await this.jwtService.signAsync({
         sub: -42,
