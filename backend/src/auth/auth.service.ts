@@ -1,15 +1,21 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { authDTO, signinDTO, signupDTO } from '../dto';
 import * as argon from 'argon2';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
+    private config: ConfigService,
   ) {}
 
   async signup(dto: authDTO) {
@@ -50,7 +56,15 @@ export class AuthService {
     return this.signToken(user.id, user.username);
   }
 
-  async finish_signup(dto: signupDTO) {
+  async finish_signup(dto: signupDTO, UserToken: string) {
+    if (!UserToken) throw new UnauthorizedException('Invalid Request');
+    try {
+      await this.jwtService.verifyAsync(UserToken, {
+        secret: this.config.get('JWT_SECRET'),
+      });
+    } catch {
+      throw new UnauthorizedException();
+    }
     let user = await this.findUser(dto.email);
     if (!user)
       throw new ForbiddenException('you need to signup with intra first');
@@ -66,12 +80,29 @@ export class AuthService {
       data: {
         username: dto.username,
         hash: hash,
-        avatarLink: dto.avatar,
         isAuthenticated: true,
       },
     });
     user = await this.findUser(dto.email);
     return this.signToken(user.id, user.username);
+  }
+
+  async saveAvatar(userToken: string, file: Express.Multer.File) {
+    try {
+      const payload = await this.jwtService.verifyAsync(userToken, {
+        secret: this.config.get('JWT_SECRET'),
+      });
+      await this.prisma.user.updateMany({
+        where: {
+          email: payload.email,
+        },
+        data: {
+          avatarLink: file.path,
+        },
+      });
+    } catch {
+      throw new UnauthorizedException();
+    }
   }
 
   async signToken(
@@ -85,7 +116,6 @@ export class AuthService {
   }
 
   async findUser(email: string) {
-    //findUnique
     const user = await this.prisma.user.findFirst({
       where: {
         email: email,

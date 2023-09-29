@@ -33,9 +33,9 @@ export class signupDTO {
   @IsNotEmpty()
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
-  avatar: string;
+  // @IsString()
+  // @IsNotEmpty()
+  // avatar: string;
 
   @IsString()
   @IsNotEmpty()
