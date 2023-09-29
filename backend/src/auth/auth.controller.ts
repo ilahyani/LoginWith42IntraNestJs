@@ -55,7 +55,6 @@ export class AuthController {
       });
       res.cookie('USER', userToken);
       res.redirect('http://localhost:3001/auth/42-redirect');
-      // return { msg: 'Success' };
     }
   }
 
@@ -68,13 +67,13 @@ export class AuthController {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: this.config.get('JWT_SECRET'),
       });
-      const { email, username, avatarLink, isAuthenticated } =
-        await this.authService.findUser(payload.email);
+      const { email, username, avatarLink } = await this.authService.findUser(
+        payload.email,
+      );
       const user = {
         email,
         username,
         avatarLink,
-        isAuthenticated, // DO I REALLY NEED THIS ??????
       };
       return { user };
     } catch {
