@@ -8,7 +8,6 @@ async function logout(router: AppRouterInstance) {
     method: "GET",
   });
   const res = await response.json();
-  console.log(res);
   if (response.ok) {
     router.push("/auth/login");
   } else alert("FAILED TO SIGN OUT");

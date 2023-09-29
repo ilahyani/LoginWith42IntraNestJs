@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { User } from "../../../types";
+import { User } from "../../../../types";
 
 async function finishSignup(
   email: string,
@@ -17,19 +17,13 @@ async function finishSignup(
   if (avatar) {
     const formData = new FormData();
     formData.append("avatar", avatar);
-    try {
-      const response = await fetch("http://localhost:3000/auth/uploadAvatar", {
-        credentials: "include",
-        method: "POST",
-        body: formData,
-      });
-      if (response.ok) {
-        console.log("File uploaded successfully.");
-      } else {
-        alert("File upload failed.");
-      }
-    } catch (error) {
-      console.error("Error uploading file:", error);
+    const response = await fetch("http://localhost:3000/auth/uploadAvatar", {
+      credentials: "include",
+      method: "POST",
+      body: formData,
+    });
+    if (!response.ok) {
+      alert("File upload failed.");
     }
   }
   const response = await fetch("http://localhost:3000/auth/finish_signup", {

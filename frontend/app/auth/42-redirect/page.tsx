@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import SignUpForm from "./SignUpForm";
+import SignUpForm from "./components/SignUpForm";
 import { User } from "../../../types";
 
 async function getPreAuthData() {
