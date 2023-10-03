@@ -1,4 +1,4 @@
-# NestJs Auth System Documentation [Almost done]
+# NestJs Auth System Documentation
 
 # Introduction
 
