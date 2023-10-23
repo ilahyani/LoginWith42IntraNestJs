@@ -1,3 +1,22 @@
+# Table of Contents
+1. [Introduction](#introduction)
+2. [Setup](#setup)
+   1. [First create a new Nest application](#first-create-a-new-nest-application)
+   2. [Database Container](#database-container)
+   3. [Prisma](#prisma)
+   4. [Set up the database schema](#set-up-the-database-schema)
+   5. [Prisma module](#prisma-module)
+3. [Before Authentication](#before-authentication)
+   1. [NestJs Request Lifecycle](#nestjs-request-lifecycle)
+      - [Middlewares](#middlewares)
+      - [Guards](#guards)
+      - [Interceptors](#interceptors)
+      - [Pipes](#pipes)
+      - [Handlers](#handlers)
+      - [Exception Filters](#exception-filters)
+4. [Authentication](#authentication)
+
+
 # NestJs Authentication System With 42-Intra
 
 # Introduction
